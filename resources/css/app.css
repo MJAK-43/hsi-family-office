@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply font-body text-hsi-navy antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-heading;
+    }
+}
+
+@layer utilities {
+    .hsi-sidebar-gradient {
+        background: linear-gradient(180deg, #071B34 0%, #0B2748 100%);
+    }
+
+    .hsi-gold-gradient {
+        background: linear-gradient(135deg, #D4AF37 0%, #E8C766 100%);
+    }
+}
+
+/* Listes déroulantes : le texte ne passe jamais sous la flèche, même avec un padding horizontal réduit (px-3). */
+select:not([multiple]):not([size]) {
+    padding-right: 2.25rem !important;
+    text-overflow: ellipsis;
+}
