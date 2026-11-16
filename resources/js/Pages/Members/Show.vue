@@ -171,7 +171,7 @@ const destroy = (id, name) => {
                     </div>
                     <div>
                         <dt class="text-hsi-slate-light text-xs uppercase tracking-wide">Genre</dt>
-                        <dd class="text-hsi-navy mt-0.5">{{ member.gender ?? '—' }}</dd>
+                        <dd class="text-hsi-navy mt-0.5">{{ member.gender_label ?? '—' }}</dd>
                     </div>
                     <div>
                         <dt class="text-hsi-slate-light text-xs uppercase tracking-wide">Langues</dt>

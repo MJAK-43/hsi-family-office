@@ -46,7 +46,7 @@ class DemoMemberSeeder extends Seeder
                 'profession' => 'Gestionnaire de patrimoine',
                 'bio' => 'Membre fondateur et administrateur du Family Office HSI. Spécialisé en gestion d\'actifs et gouvernance familiale.',
                 'date_of_birth' => '1985-02-14',
-                'gender' => 'Masculin',
+                'gender' => 'male',
                 'languages' => ['Français', 'Anglais'],
                 'member_since' => '2022-06-12',
                 'status' => MemberStatus::Active,

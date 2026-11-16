@@ -10,6 +10,14 @@ use Illuminate\Validation\Rules\Password;
 
 class UpdateMemberRequest extends FormRequest
 {
+    /** Les anciennes saisies libres (« Masculin », « Non précisé »…) sont converties avant contrôle. */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('gender')) {
+            $this->merge(['gender' => \App\Support\Gender::normalize($this->input('gender'))]);
+        }
+    }
+
     public function authorize(): bool
     {
         return $this->user()->can('edit members');
@@ -35,7 +43,7 @@ class UpdateMemberRequest extends FormRequest
             'profession' => ['nullable', 'string', 'max:255'],
             'bio' => ['nullable', 'string', 'max:2000'],
             'date_of_birth' => ['nullable', 'date', 'before:today'],
-            'gender' => ['nullable', 'string', 'max:20'],
+            'gender' => ['nullable', Rule::in(\App\Support\Gender::CODES)],
             'languages' => ['nullable', 'array'],
             'languages.*' => ['string', 'max:50'],
             'member_since' => ['nullable', 'date'],

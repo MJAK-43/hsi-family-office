@@ -38,7 +38,7 @@ class AssistantApiTest extends TestCase
         parent::tearDown();
     }
 
-    private function member(string $phone = null, string $status = 'active'): User
+    private function member(?string $phone = null, string $status = 'active'): User
     {
         $user = User::factory()->create(['name' => 'Romy Jokung']);
         $user->syncRoles(['member']);
@@ -120,6 +120,30 @@ class AssistantApiTest extends TestCase
             ->assertJsonPath('dues.0.period', 'T4 2026')
             ->assertJsonPath('dues.0.status', 'payée')
             ->assertJsonMissing(['email' => $romy->email]);
+    }
+
+    public function test_a_profile_with_an_old_gender_value_can_update_its_phone(): void
+    {
+        $user = $this->member('+33 6 00 00 00 78');
+        $user->memberProfile->update(['gender' => 'Masculin']);
+
+        $this->actingAs($user)->patch(route('profile.update'), [
+            'name' => $user->name, 'email' => $user->email, 'phone' => '+33612345678', 'gender' => 'Masculin',
+        ])->assertSessionHasNoErrors()->assertSessionHas('success');
+
+        $profile = $user->memberProfile->fresh();
+        $this->assertSame('+33612345678', $profile->phone);
+        $this->assertSame('male', $profile->gender);
+        // Le numéro mis à jour est aussitôt reconnu par l'assistant WhatsApp.
+        $this->asAssistant()->getJson('/api/assistant/resolve-phone?phone=33612345678')->assertJson(['found' => true, 'user_id' => $user->id]);
+    }
+
+    public function test_legacy_gender_values_are_normalized(): void
+    {
+        $this->assertSame('male', \App\Support\Gender::normalize('Masculin'));
+        $this->assertSame('female', \App\Support\Gender::normalize(' Féminin '));
+        $this->assertNull(\App\Support\Gender::normalize('Non précisé'));
+        $this->assertSame('other', \App\Support\Gender::normalize('other'));
     }
 
     public function test_whatsapp_numbers_are_matched_whatever_the_format(): void

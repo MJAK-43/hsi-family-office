@@ -214,12 +214,13 @@ const labelClass = 'block text-sm font-medium text-hsi-slate mb-1.5';
                 </div>
                 <div>
                     <label :class="labelClass">Genre</label>
-                    <input
-                        v-model="form.gender"
-                        type="text"
-                        :class="inputClass"
-                        placeholder="Masculin, Féminin..."
-                    />
+                    <select v-model="form.gender" :class="inputClass">
+                        <option value="">Non précisé</option>
+                        <option value="female">Femme</option>
+                        <option value="male">Homme</option>
+                        <option value="other">Autre</option>
+                    </select>
+                    <p v-if="form.errors.gender" class="mt-1 text-xs text-hsi-danger">{{ form.errors.gender }}</p>
                 </div>
                 <div>
                     <label :class="labelClass">Membre depuis</label>

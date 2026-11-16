@@ -257,6 +257,7 @@ class MemberController extends Controller
                 'date_of_birth' => $profile->date_of_birth?->format('d/m/Y'),
                 'date_of_birth_raw' => $profile->date_of_birth?->format('Y-m-d'),
                 'gender' => $profile->gender,
+                'gender_label' => \App\Support\Gender::label($profile->gender),
                 'languages' => $profile->languages ?? [],
                 'notes' => $profile->notes,
                 'permissions' => $profile->user?->getAllPermissions()->pluck('name'),

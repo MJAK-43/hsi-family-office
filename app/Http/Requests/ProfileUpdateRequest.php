@@ -9,6 +9,14 @@ use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
 {
+    /** Les anciennes saisies libres (« Masculin », « Non précisé »…) sont converties avant contrôle. */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('gender')) {
+            $this->merge(['gender' => \App\Support\Gender::normalize($this->input('gender'))]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -44,6 +52,7 @@ class ProfileUpdateRequest extends FormRequest
             'phone.regex' => 'Saisissez un numéro international valide : choisissez l\'indicatif du pays, puis votre numéro.',
             'email.unique' => 'Cette adresse email est déjà utilisée par un autre compte.',
             'country_id.exists' => 'Choisissez votre pays dans la liste.',
+            'gender.in' => 'Choisissez le genre dans la liste.',
         ];
     }
 

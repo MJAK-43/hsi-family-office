@@ -219,6 +219,7 @@ const opt = (label) => `${label} (${t('common.optional')})`;
                                             <option value="male">{{ t('fields.male') }}</option>
                                             <option value="other">{{ t('fields.other') }}</option>
                                         </select>
+                                        <p v-if="form.errors.gender" class="text-[13px] font-medium text-hsi-danger" role="alert">{{ form.errors.gender }}</p>
                                     </div>
                                 </div>
 
